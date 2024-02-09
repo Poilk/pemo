@@ -9,7 +9,7 @@
 
 #include "gtest/gtest.h"
 
-TEST(ManualEvent, Base) {
+TEST(ManualEvent, basic) {
   pemo::ManualEvent event;
   // test 01
   {

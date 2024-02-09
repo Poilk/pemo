@@ -9,7 +9,7 @@
 using namespace pemo;
 using namespace pemo::engine;
 
-TEST(ThreadPool, Base) {
+TEST(ThreadPool, basic) {
   std::atomic<int32_t> count{};
   std::mutex mutex;
   {
