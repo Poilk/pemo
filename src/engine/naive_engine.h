@@ -29,8 +29,10 @@ struct NaiveOpr : public Opr{
 
 VarHandle NewVariable() override;
 OprHandle NewOperator(AsyncFunc func) override;
-void Push(OprHandle op, Context exec_ctx) override;
-void PushSync(SyncFunc func, Context exec_ctx) override;
+void Push(OprHandle op, Context execCtx) override;
+void PushAsync(AsyncFunc func, Context execCtx) override;
+void PushSync(SyncFunc func, Context execCtx) override;
+void WaitForAll() override;
 };
 
 

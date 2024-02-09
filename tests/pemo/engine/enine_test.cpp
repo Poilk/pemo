@@ -26,14 +26,38 @@ void EngineBasicTest(Engine *engine) {
     // test push sync
     Context ctx;
     engine->PushSync(foolIncFunc, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 1);
     engine->PushSync(foolIncFunc, ctx);
     engine->PushSync(foolIncFunc, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 3);
     engine->PushSync(foolDecFunc, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 2);
     engine->PushSync(foolDecFunc, ctx);
     engine->PushSync(foolIncFunc, ctx);
+    engine->WaitForAll();
+    EXPECT_EQ(count, 2);
+  }
+
+  {
+    // test push sync
+    count = 0;
+    Context ctx;
+    engine->PushAsync(foolIncFunc, ctx);
+    engine->WaitForAll();
+    EXPECT_EQ(count, 1);
+    engine->PushAsync(foolIncFunc, ctx);
+    engine->PushAsync(foolIncFunc, ctx);
+    engine->WaitForAll();
+    EXPECT_EQ(count, 3);
+    engine->PushAsync(foolDecFunc, ctx);
+    engine->WaitForAll();
+    EXPECT_EQ(count, 2);
+    engine->PushAsync(foolDecFunc, ctx);
+    engine->PushAsync(foolIncFunc, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 2);
   }
 
@@ -44,14 +68,18 @@ void EngineBasicTest(Engine *engine) {
     engine::OprHandle incOprHandle = engine->NewOperator(foolIncFunc);
     engine::OprHandle decOprHandle = engine->NewOperator(foolDecFunc);
     engine->Push(incOprHandle, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 1);
     engine->Push(incOprHandle, ctx);
     engine->Push(incOprHandle, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 3);
     engine->Push(decOprHandle, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 2);
     engine->Push(incOprHandle, ctx);
     engine->Push(decOprHandle, ctx);
+    engine->WaitForAll();
     EXPECT_EQ(count, 2);
   }
 }

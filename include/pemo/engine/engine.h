@@ -57,8 +57,10 @@ class Engine {
  public:
   virtual engine::VarHandle NewVariable() = 0;
   virtual engine::OprHandle NewOperator(AsyncFunc func) = 0;
-  virtual void Push(OprHandle op, Context exec_ctx) = 0;
-  virtual void PushSync(SyncFunc, Context exec_ctx) = 0;
+  virtual void Push(OprHandle op, Context execCtx) = 0;
+  virtual void PushSync(SyncFunc, Context execCtx) = 0;
+  virtual void PushAsync(AsyncFunc, Context execCtx) = 0;
+  virtual void WaitForAll() = 0;
   static Engine* Get();
 };
 

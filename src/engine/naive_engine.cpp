@@ -17,13 +17,20 @@ OprHandle NaiveEngine::NewOperator(AsyncFunc func) {
   return opr;
 }
 
-void NaiveEngine::Push(OprHandle op, Context exec_ctx) {
+void NaiveEngine::Push(OprHandle op, Context execCtx) {
   NaiveOpr* opr = op->Cast<NaiveOpr>();
-  opr->m_func(static_cast<RunContext>(exec_ctx));
+  opr->m_func(static_cast<RunContext>(execCtx));
 }
 
-void NaiveEngine::PushSync(Engine::SyncFunc func, Context exec_ctx) {
-  func(static_cast<RunContext>(exec_ctx));
+void NaiveEngine::PushSync(Engine::SyncFunc func, Context execCtx) {
+  auto opr = new NaiveOpr();
+  opr->m_func = func;
+  Push(opr, execCtx);
+}
+void NaiveEngine::PushAsync(Engine::AsyncFunc func, Context execCtx) {
+  PushSync(func, execCtx);
+}
+void NaiveEngine::WaitForAll() {
 }
 
 Engine* CreateNaiveEngine() {
