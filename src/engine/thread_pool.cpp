@@ -29,11 +29,13 @@ ThreadPool::ThreadPool(int32_t size, const std::function<void(std::shared_ptr<Ma
     WaitForReady();
   }
 }
+
 void ThreadPool::WaitForReady() {
   for (auto& mePtr : m_readyEvents) {
     mePtr->Wait();
   }
 }
+
 ThreadPool::~ThreadPool() {
   for (auto& thread : m_workerThreads) {
     thread.join();

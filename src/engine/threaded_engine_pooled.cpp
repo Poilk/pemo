@@ -39,6 +39,7 @@ void ThreadedEnginePooled::ThreadWorker(std::shared_ptr<ManualEvent> ready) {
     OnComplete();
   }
 }
+
 Engine *CreateDefaultThreadedEnginePooled() {
   return new ThreadedEnginePooled();
 }

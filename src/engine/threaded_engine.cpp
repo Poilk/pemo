@@ -4,6 +4,8 @@
 
 #include "threaded_engine.h"
 
+#include <utility>
+
 namespace pemo {
 namespace engine {
 
@@ -11,9 +13,10 @@ VarHandle ThreadedEngine::NewVariable() {
   return nullptr;
 }
 
-OprHandle ThreadedEngine::NewOperator(Engine::AsyncFunc func) {
+OprHandle ThreadedEngine::NewOperator(Engine::AsyncFunc func, const std::vector<VarHandle>& constVars,
+                                      const std::vector<VarHandle>& mutableVars) {
   auto opr = new ThreadedOpr();
-  opr->m_func = func;
+  opr->m_func = std::move(func);
 
   return opr;
 }

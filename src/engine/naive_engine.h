@@ -10,34 +10,35 @@
 #include "engine_impl.h"
 
 namespace pemo {
-namespace engine{
+namespace engine {
 
-class NaiveVar final : public Var{
+class NaiveVar final : public Var {
  public:
-  inline static NaiveVar * CastFromBase(Var *ptr){
+  inline static NaiveVar *CastFromBase(Var *ptr) {
     return ptr->Cast<NaiveVar>();
   }
 };
 
-class NaiveEngine : public Engine{
+class NaiveEngine : public Engine {
  public:
-struct NaiveOpr : public Opr{
-//  explicit NaiveOpr(AsyncFunc func): m_func(std::move(func)){
-//  }
-  AsyncFunc m_func;
+  struct NaiveOpr : public Opr {
+    //  explicit NaiveOpr(AsyncFunc func): m_func(std::move(func)){
+    //  }
+    AsyncFunc m_func;
+    std::vector<VarHandle> m_constVars;
+    std::vector<VarHandle> m_mutableVars;
+  };
+
+  VarHandle NewVariable() override;
+  OprHandle NewOperator(AsyncFunc func, std::vector<VarHandle> const &constVars,
+                        std::vector<VarHandle> const &mutableVars) override;
+  void Push(OprHandle op, Context execCtx) override;
+  void PushAsync(AsyncFunc func, Context execCtx) override;
+  void PushSync(SyncFunc func, Context execCtx) override;
+  void WaitForAll() override;
 };
 
-VarHandle NewVariable() override;
-OprHandle NewOperator(AsyncFunc func) override;
-void Push(OprHandle op, Context execCtx) override;
-void PushAsync(AsyncFunc func, Context execCtx) override;
-void PushSync(SyncFunc func, Context execCtx) override;
-void WaitForAll() override;
-};
-
-
-} // namespace engine
-
+}  // namespace engine
 
 }  // namespace pemo
 

@@ -51,14 +51,15 @@ class Engine {
   typedef Context RunContext;
   typedef std::function<void(RunContext)> SyncFunc;
   typedef std::function<void(RunContext)> AsyncFunc;
-  typedef engine::VarHandle VarHandle;
-  typedef engine::OprHandle OprHandle;
+  //  typedef engine::VarHandle VarHandle;
+  //  typedef engine::OprHandle OprHandle;
 
  public:
   virtual ~Engine() = default;
   virtual engine::VarHandle NewVariable() = 0;
-  virtual engine::OprHandle NewOperator(AsyncFunc func) = 0;
-  virtual void Push(OprHandle op, Context execCtx) = 0;
+  virtual engine::OprHandle NewOperator(AsyncFunc func, std::vector<engine::VarHandle> const& constVars,
+                                        std::vector<engine::VarHandle> const& mutableVars) = 0;
+  virtual void Push(engine::OprHandle op, Context execCtx) = 0;
   virtual void PushSync(SyncFunc, Context execCtx) = 0;
   virtual void PushAsync(AsyncFunc, Context execCtx) = 0;
   virtual void WaitForAll() = 0;

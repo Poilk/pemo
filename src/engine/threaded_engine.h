@@ -20,14 +20,15 @@ struct ThreadedOpr final : public Opr {
 };  // struct ThreadedOpr
 
 struct OprBlock {
-  ThreadedOpr* m_opr{nullptr};
+  ThreadedOpr *m_opr{nullptr};
   Context m_ctx;
 };
 
 class ThreadedEngine : public Engine {
  public:
   VarHandle NewVariable() override;
-  OprHandle NewOperator(AsyncFunc func) override;
+  OprHandle NewOperator(AsyncFunc func, std::vector<VarHandle> const &constVars,
+                        std::vector<VarHandle> const &mutableVars) override;
   void Push(OprHandle op, Context execCtx) override;
   void PushSync(SyncFunc func, Context execCtx) override;
   void PushAsync(AsyncFunc func, Context execCtx) override;

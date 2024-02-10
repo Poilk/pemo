@@ -23,8 +23,8 @@ void ThreadedEnginePooledBasicTest(Engine *engine, int32_t workerThreadNum) {
     // test push
     count = 0;
     Context ctx;
-    engine::OprHandle incOprHandle = engine->NewOperator(foolIncFunc);
-    engine::OprHandle decOprHandle = engine->NewOperator(foolDecFunc);
+    engine::OprHandle incOprHandle = engine->NewOperator(foolIncFunc, {}, {});
+    engine::OprHandle decOprHandle = engine->NewOperator(foolDecFunc, {}, {});
 
     const int32_t nTimesOfWt = 3;
     {

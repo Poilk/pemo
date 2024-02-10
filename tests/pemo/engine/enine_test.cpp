@@ -65,8 +65,8 @@ void EngineBasicTest(Engine *engine) {
     // test push
     count = 0;
     Context ctx;
-    engine::OprHandle incOprHandle = engine->NewOperator(foolIncFunc);
-    engine::OprHandle decOprHandle = engine->NewOperator(foolDecFunc);
+    engine::OprHandle incOprHandle = engine->NewOperator(foolIncFunc, {}, {});
+    engine::OprHandle decOprHandle = engine->NewOperator(foolDecFunc, {}, {});
     engine->Push(incOprHandle, ctx);
     engine->WaitForAll();
     EXPECT_EQ(count, 1);
