@@ -85,6 +85,11 @@ void EngineBasicTest(Engine *engine) {
 }
 
 TEST(Engine, basic) {
-  auto naive_engine = engine::CreateNaiveEngine();
-  EngineBasicTest(naive_engine);
+  auto naiveEngine = engine::CreateNaiveEngine();
+  EngineBasicTest(naiveEngine);
+  auto pooledEngine = engine::CreateDefaultThreadedEnginePooled();
+  EngineBasicTest(pooledEngine);
+
+  auto pooledEngine2 = engine::CreateThreadedEnginePooled(4);
+  EngineBasicTest(pooledEngine2);
 }

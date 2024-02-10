@@ -35,6 +35,8 @@ inline T* Opr::Cast(){
 }
 
 Engine *CreateNaiveEngine();
+Engine *CreateThreadedEnginePooled(int32_t workerThreadNum);
+Engine *CreateDefaultThreadedEnginePooled();
 
 }  // namespace engine
 }  // namespace pemo

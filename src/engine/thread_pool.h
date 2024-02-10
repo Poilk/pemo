@@ -9,6 +9,7 @@
 #include <thread>
 #include <vector>
 
+#include "pemo/common/base.h"
 #include "pemo/common/manual_event.h"
 
 namespace pemo {
@@ -27,6 +28,7 @@ class ThreadPool {
  private:
   std::vector<std::thread> m_workerThreads;
   std::vector<std::shared_ptr<ManualEvent>> m_readyEvents;
+  DISALLOW_COPY_AND_ASSIGN(ThreadPool);
 };
 
 }  // namespace engine
