@@ -31,9 +31,10 @@ class ThreadedEngine : public Engine {
   void Push(OprHandle op, Context execCtx) override;
   void PushSync(SyncFunc func, Context execCtx) override;
   void PushAsync(AsyncFunc func, Context execCtx) override;
-  // todo only support single thread push, or WaitForAll will confused???
+  // todo only single-threaded push is supported, as using multiple threads may cause confusion in the  WaitForAll ???
   void WaitForAll() override;
   virtual void PushToExecute(OprBlock oprBlock) = 0;
+  ~ThreadedEngine() override = default;
 
  protected:
   void OnComplete();

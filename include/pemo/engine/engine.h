@@ -55,6 +55,7 @@ class Engine {
   typedef engine::OprHandle OprHandle;
 
  public:
+  virtual ~Engine() = default;
   virtual engine::VarHandle NewVariable() = 0;
   virtual engine::OprHandle NewOperator(AsyncFunc func) = 0;
   virtual void Push(OprHandle op, Context execCtx) = 0;

@@ -17,6 +17,7 @@ class ThreadedEnginePooled : public ThreadedEngine {
   }
   ThreadedEnginePooled(int32_t workerThreadNum = 1);
   void ThreadWorker(std::shared_ptr<ManualEvent> ready);
+  ~ThreadedEnginePooled() override = default;
 
  private:
   ConcurrentBlockingQueue<OprBlock> m_cbq;
