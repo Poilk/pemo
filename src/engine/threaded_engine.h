@@ -13,25 +13,15 @@
 namespace pemo {
 namespace engine {
 
-class ThreadedVar final : public Var {};  // struct Threaded
-
-struct ThreadedOpr final : public Opr {
-  Engine::AsyncFunc m_func;
-};  // struct ThreadedOpr
-
 struct OprBlock {
-  ThreadedOpr *m_opr{nullptr};
-  Context m_ctx;
+  AsyncFunc m_func;
+  //Context m_ctx;
 };
 
 class ThreadedEngine : public Engine {
  public:
-  VarHandle NewVariable() override;
-  OprHandle NewOperator(AsyncFunc func, std::vector<VarHandle> const &constVars,
-                        std::vector<VarHandle> const &mutableVars) override;
-  void Push(OprHandle op, Context execCtx) override;
-  void PushSync(SyncFunc func, Context execCtx) override;
-  void PushAsync(AsyncFunc func, Context execCtx) override;
+  void Process(SyncFunc func) override;
+  void Push(AsyncFunc func) override;
   // todo only single-threaded push is supported, as using multiple threads may cause confusion in the  WaitForAll ???
   void WaitForAll() override;
   virtual void PushToExecute(OprBlock oprBlock) = 0;

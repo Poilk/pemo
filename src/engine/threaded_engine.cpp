@@ -9,39 +9,6 @@
 namespace pemo {
 namespace engine {
 
-VarHandle ThreadedEngine::NewVariable() {
-  return nullptr;
-}
-
-OprHandle ThreadedEngine::NewOperator(Engine::AsyncFunc func, const std::vector<VarHandle>& constVars,
-                                      const std::vector<VarHandle>& mutableVars) {
-  auto opr = new ThreadedOpr();
-  opr->m_func = std::move(func);
-
-  return opr;
-}
-
-void ThreadedEngine::Push(OprHandle op, Context execCtx) {
-  auto opr = op->Cast<ThreadedOpr>();
-  OprBlock oprBlock;
-  oprBlock.m_opr = opr;
-  oprBlock.m_ctx = execCtx;
-  ++m_pending;
-  PushToExecute(oprBlock);
-}
-
-void ThreadedEngine::PushSync(Engine::SyncFunc func, Context execCtx) {
-  // todo impl
-  PushAsync(func, execCtx);
-}
-
-void ThreadedEngine::PushAsync(Engine::AsyncFunc func, Context execCtx) {
-  // todo impl
-  auto opr = new ThreadedOpr();
-  opr->m_func = func;
-  Push(opr, execCtx);
-}
-
 void ThreadedEngine::WaitForAll() {
   std::unique_lock<std::mutex> lock(m_finishedMtx);
   m_finishedCv.wait(lock, [this]() { return m_pending == 0; });
@@ -58,6 +25,18 @@ void ThreadedEngine::OnComplete() {
 }
 
 void ThreadedEngine::OnStart() {
+}
+
+void ThreadedEngine::Process(SyncFunc func) {
+  // todo use pool to process???
+  func();
+}
+
+void ThreadedEngine::Push(AsyncFunc func) {
+  OprBlock oprBlock;
+  oprBlock.m_func = func;
+  ++m_pending;
+  PushToExecute(oprBlock);
 }
 
 }  // namespace engine

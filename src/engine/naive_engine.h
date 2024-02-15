@@ -12,30 +12,12 @@
 namespace pemo {
 namespace engine {
 
-class NaiveVar final : public Var {
- public:
-  inline static NaiveVar *CastFromBase(Var *ptr) {
-    return ptr->Cast<NaiveVar>();
-  }
-};
-
 class NaiveEngine : public Engine {
  public:
-  struct NaiveOpr : public Opr {
-    //  explicit NaiveOpr(AsyncFunc func): m_func(std::move(func)){
-    //  }
-    AsyncFunc m_func;
-    std::vector<VarHandle> m_constVars;
-    std::vector<VarHandle> m_mutableVars;
-  };
+  void Process(SyncFunc func) override;
 
-  VarHandle NewVariable() override;
-  OprHandle NewOperator(AsyncFunc func, std::vector<VarHandle> const &constVars,
-                        std::vector<VarHandle> const &mutableVars) override;
-  void Push(OprHandle op, Context execCtx) override;
-  void PushAsync(AsyncFunc func, Context execCtx) override;
-  void PushSync(SyncFunc func, Context execCtx) override;
   void WaitForAll() override;
+  void Push(AsyncFunc func) override;
 };
 
 }  // namespace engine

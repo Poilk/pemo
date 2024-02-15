@@ -35,7 +35,7 @@ void ThreadedEnginePooled::ThreadWorker(std::shared_ptr<ManualEvent> ready) {
     bool ret = m_cbq.Pop(&opr);
     assert(ret == true);
     OnStart();
-    opr.m_opr->m_func(opr.m_ctx);
+    opr.m_func();
     OnComplete();
   }
 }
