@@ -53,6 +53,30 @@ void ThreadedEnginePooledBasicTest(Engine *engine, int32_t workerThreadNum) {
     }
     EXPECT_EQ(count, 0);
   }
+
+  {
+    // test Process Graph
+    count = 0;
+
+    const int32_t nTimesOfWt = 3;
+    {
+      const auto start = std::chrono::high_resolution_clock::now();
+
+      Graph graph;
+      for (int i = 0; i < workerThreadNum * nTimesOfWt; i++) {
+        graph.AddNode(foolIncFunc, "foolIncFunc");
+        graph.AddNode(foolDecFunc, "foolIncFunc");
+      }
+      engine->Process(graph);
+
+      const auto end = std::chrono::high_resolution_clock::now();
+      const std::chrono::duration<double, std::milli> elapsed = end - start;
+
+      EXPECT_EQ(count, 0);
+      EXPECT_GE(elapsed.count(), nTimesOfWt * sleepMilliseconds - 100);
+      EXPECT_LE(elapsed.count(), nTimesOfWt * sleepMilliseconds + 100);
+    }
+  }
 }
 
 TEST(ThreadedEnginePooled, basic) {

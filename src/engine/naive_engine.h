@@ -15,9 +15,11 @@ namespace engine {
 class NaiveEngine : public Engine {
  public:
   void Process(SyncFunc func) override;
+  void Process(Graph& graph) override;
+  void Push(AsyncFunc func) override;
+  //void Push(Graph& graph) override;
 
   void WaitForAll() override;
-  void Push(AsyncFunc func) override;
 };
 
 }  // namespace engine

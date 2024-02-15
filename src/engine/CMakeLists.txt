@@ -1,6 +1,7 @@
 set(TARGET_NAME pemo_engine)
 
 add_library(${TARGET_NAME}
+        graph.cpp
         thread_pool.cpp
         naive_engine.cpp
         threaded_engine.cpp

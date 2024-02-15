@@ -39,5 +39,14 @@ void ThreadedEngine::Push(AsyncFunc func) {
   PushToExecute(oprBlock);
 }
 
+void ThreadedEngine::Process(Graph& graph) {
+  const auto nodes = graph.GetNodes();
+  for (const auto& node : nodes) {
+    Push(node.m_func);
+  }
+  //todo wait for graph????
+  WaitForAll();
+}
+
 }  // namespace engine
 }  // namespace pemo

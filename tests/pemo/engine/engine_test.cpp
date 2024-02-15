@@ -8,6 +8,7 @@
 
 #include "engine_impl.h"
 #include "pemo/common/log.h"
+#include "pemo/engine/graph.h"
 
 using namespace pemo::engine;
 
@@ -57,6 +58,19 @@ void EngineBasicTest(Engine *engine) {
     engine->Process(foolIncFunc);
     engine->WaitForAll();
     EXPECT_EQ(count, 2);
+  }
+
+  {
+    // test Process Graph
+    count = 0;
+    Graph graph;
+    graph.AddNode(foolIncFunc, "foolIncFunc");
+    graph.AddNode(foolIncFunc, "foolIncFunc");
+    engine->Process(graph);
+    EXPECT_EQ(count, 2);
+    graph.AddNode(foolDecFunc, "foolDecFunc");
+    engine->Process(graph);
+    EXPECT_EQ(count, 3);
   }
 }
 

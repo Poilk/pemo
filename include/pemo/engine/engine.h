@@ -9,6 +9,7 @@
 
 #include <functional>
 
+#include "pemo/engine/engine_common.h"
 #include "pemo/engine/graph.h"
 
 namespace pemo {
@@ -34,8 +35,10 @@ class Engine {
 
  public:
   virtual ~Engine() = default;
-  virtual void Process(SyncFunc) = 0;
+  virtual void Process(SyncFunc func) = 0;
+  virtual void Process(Graph &graph) = 0;
   virtual void Push(AsyncFunc) = 0;
+  //virtual void Push(Graph& graph) = 0;
   // virtual void Push(SyncFunc, Context execCtx) = 0;
   //   virtual void Process(, Context execCtx) = 0;
   // virtual void PushAsync(AsyncFunc, Context execCtx) = 0;

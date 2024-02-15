@@ -24,6 +24,7 @@ class ThreadedEngine : public Engine {
   void Push(AsyncFunc func) override;
   // todo only single-threaded push is supported, as using multiple threads may cause confusion in the  WaitForAll ???
   void WaitForAll() override;
+  void Process(Graph& graph) override;
   virtual void PushToExecute(OprBlock oprBlock) = 0;
   ~ThreadedEngine() override = default;
 
