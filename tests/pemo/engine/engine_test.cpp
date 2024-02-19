@@ -72,6 +72,75 @@ void EngineBasicTest(Engine *engine) {
     engine->Process(graph);
     EXPECT_EQ(count, 3);
   }
+
+  {
+    // test Process Dependency 1
+    count = 0;
+    Graph graph;
+    auto fa = [&count]() {
+      EXPECT_EQ(count, 0);
+      count++;
+    };
+    auto fb = [&count]() {
+      EXPECT_EQ(count, 1);
+      count++;
+    };
+    auto fc = [&count]() {
+      EXPECT_EQ(count, 2);
+      count++;
+    };
+    auto fd = [&count]() {
+      EXPECT_EQ(count, 3);
+      count++;
+    };
+    graph.AddNode(fa, "fa");
+    graph.AddNode(fb, "fb");
+    graph.AddNode(fc, "fc");
+    graph.AddNode(fd, "fd");
+    graph.AddDependency("fb", "fa");
+    graph.AddDependency("fc", "fb");
+    graph.AddDependency("fc", "fa");
+    graph.AddDependency("fd", "fc");
+    graph.AddDependency("fd", "fb");
+
+    engine->Process(graph);
+    EXPECT_EQ(count, 4);
+  }
+
+  {
+    // test Process Dependency 2
+    count = 0;
+    Graph graph;
+    auto fa = [&count]() {
+      EXPECT_EQ(count, 0);
+      count++;
+    };
+    auto fb = [&count]() {
+      EXPECT_GE(count, 1);
+      EXPECT_LE(count, 2);
+      count++;
+    };
+    auto fc = [&count]() {
+      EXPECT_GE(count, 1);
+      EXPECT_LE(count, 2);
+      count++;
+    };
+    auto fd = [&count]() {
+      EXPECT_EQ(count, 3);
+      count++;
+    };
+    graph.AddNode(fa, "fa");
+    graph.AddNode(fb, "fb");
+    graph.AddNode(fc, "fc");
+    graph.AddNode(fd, "fd");
+    graph.AddDependency("fb", "fa");
+    graph.AddDependency("fc", "fa");
+    graph.AddDependency("fd", "fc");
+    graph.AddDependency("fd", "fb");
+
+    engine->Process(graph);
+    EXPECT_EQ(count, 4);
+  }
 }
 
 TEST(Engine, basic) {

@@ -43,7 +43,7 @@ class Engine {
   //   virtual void Process(, Context execCtx) = 0;
   // virtual void PushAsync(AsyncFunc, Context execCtx) = 0;
   virtual void WaitForAll() = 0;
-  static Engine* Get();
+  //static Engine* Get();
 };
 
 }  // namespace engine
